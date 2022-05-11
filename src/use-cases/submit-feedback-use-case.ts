@@ -22,9 +22,10 @@ export class SubmitFeedbackUseCase {
       throw new Error("Comment is required");
     }
 
-    if (screenshot && !screenshot.startsWith("data:image/png:base64")) {
+    if (screenshot && !screenshot.startsWith("data:image/png;base64,")) {
       throw new Error("Invalid screenshot format");
     }
+    console.log(screenshot);
 
     await this.feedbacksRepository.create({
       type,
@@ -39,6 +40,7 @@ export class SubmitFeedbackUseCase {
         `<p>Tipo do feedback: ${type}</p>`,
         `<p>Comment: ${comment}</p>`,
         `</div>`,
+        screenshot ? `<img src="${screenshot}"/ style="width:100%">` : null,
       ].join("\n"),
     });
   }
